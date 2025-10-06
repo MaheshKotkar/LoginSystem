@@ -108,7 +108,7 @@ function Auth() {
         localStorage.setItem('token', data.token);
         setSuccess('Account created successfully!');
         setSignupData({ name: '', email: '', password: '' });
-        setTimeout(() => navigate('/dashboard'), 1000); // 👈 Navigate after signup
+        setTimeout(() => navigate('/'), 1000); // 👈 Navigate after signup
       } else {
         setError(data.message || 'Signup failed');
       }
