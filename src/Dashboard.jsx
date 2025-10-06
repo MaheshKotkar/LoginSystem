@@ -1,13 +1,21 @@
 import React from "react";
-import maheshPhoto from "./assets/mahesh.jpeg"; // your photo in src/assets
-import nikhilPhoto from "./assets/nikhil.png"; // your photo in src/assets
+import maheshPhoto from "./assets/mahesh.jpeg";
+import nikhilPhoto from "./assets/nikhil.png";
 
 function Dashboard() {
+  const username = localStorage.getItem('username') || 'User';
+
   return (
     <>
       <div className="contact-container">
+        {/* Welcome Message */}
+        <div className="welcome-msg">
+          <h1>Welcome, {username}</h1>
+          <p>Below is your 2 daddy</p>
+        </div>
+
         <div className="contact-header">
-          <h1>Contact Us 👋</h1>
+          <h1>Contact Us</h1>
           <p>
             We’re a passionate team of developers from <strong>VIT Pune</strong>,
             building full-stack projects with love for technology, clean design, and innovation.
@@ -27,9 +35,9 @@ function Dashboard() {
               systems. Always striving to build impactful and optimized digital solutions.
             </p>
             <div className="socials">
-              <button className="social-btn">📧 Mail</button>
-              <button className="social-btn">💼 LinkedIn</button>
-              <button className="social-btn">🐙 GitHub</button>
+              <button className="social-btn">Mail</button>
+              <button className="social-btn">LinkedIn</button>
+              <button className="social-btn">GitHub</button>
             </div>
           </div>
 
@@ -45,9 +53,9 @@ function Dashboard() {
               Loves integrating creativity, logic, and user experience in every project.
             </p>
             <div className="socials">
-              <button className="social-btn">📧 Mail</button>
-              <button className="social-btn">💼 LinkedIn</button>
-              <button className="social-btn">🐙 GitHub</button>
+              <button className="social-btn">Mail</button>
+              <button className="social-btn">LinkedIn</button>
+              <button className="social-btn">GitHub</button>
             </div>
           </div>
         </div>
@@ -66,6 +74,26 @@ function Dashboard() {
           color: #fff;
           font-family: 'Poppins', sans-serif;
           padding: 60px 20px;
+        }
+
+        .welcome-msg {
+          text-align: center;
+          margin-bottom: 40px;
+          animation: fadeDown 0.7s ease-out;
+        }
+
+        .welcome-msg h1 {
+          font-size: 36px;
+          font-weight: 700;
+          background: linear-gradient(90deg, #4ECCA3, #3D8BFF);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 5px;
+        }
+
+        .welcome-msg p {
+          font-size: 16px;
+          color: #B0B0B0;
         }
 
         .contact-header {
