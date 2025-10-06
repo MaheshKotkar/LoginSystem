@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 function Auth() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -19,10 +21,7 @@ function Auth() {
     password: ''
   });
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -52,15 +51,10 @@ function Auth() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://loginsystembackend-eeqx.onrender.com/api/auth/login', {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: loginData.email,
-          password: loginData.password
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData)
       });
 
       const data = await response.json();
@@ -68,9 +62,7 @@ function Auth() {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         setSuccess('Login successful! Redirecting...');
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 1500);
+        setTimeout(() => navigate('/dashboard'), 1000); // 👈 Navigate to dashboard
       } else {
         setError(data.message || 'Invalid credentials');
       }
@@ -104,16 +96,10 @@ function Auth() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://loginsystembackend-eeqx.onrender.com/api/auth/signup', {
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: signupData.name,
-          email: signupData.email,
-          password: signupData.password
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(signupData)
       });
 
       const data = await response.json();
@@ -122,6 +108,7 @@ function Auth() {
         localStorage.setItem('token', data.token);
         setSuccess('Account created successfully!');
         setSignupData({ name: '', email: '', password: '' });
+        setTimeout(() => navigate('/dashboard'), 1000); // 👈 Navigate after signup
       } else {
         setError(data.message || 'Signup failed');
       }
@@ -161,15 +148,14 @@ function Auth() {
           {success && <div className="message success-message">{success}</div>}
 
           {activeTab === 'login' ? (
-            <form className="auth-form" onSubmit={handleLoginSubmit} key="login">
+            <form className="auth-form" onSubmit={handleLoginSubmit}>
               <h2>Welcome Back</h2>
               <p className="subtitle">Login to your account</p>
 
               <div className="input-group">
-                <label htmlFor="login-email">Email</label>
+                <label>Email</label>
                 <input
                   type="email"
-                  id="login-email"
                   name="email"
                   value={loginData.email}
                   onChange={handleLoginChange}
@@ -179,11 +165,10 @@ function Auth() {
               </div>
 
               <div className="input-group">
-                <label htmlFor="login-password">Password</label>
+                <label>Password</label>
                 <div className="password-input-wrapper">
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    id="login-password"
                     name="password"
                     value={loginData.password}
                     onChange={handleLoginChange}
@@ -201,28 +186,19 @@ function Auth() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="submit-button"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <span className="spinner"></span>
-                ) : (
-                  'Login'
-                )}
+              <button type="submit" className="submit-button" disabled={isLoading}>
+                {isLoading ? <span className="spinner"></span> : 'Login'}
               </button>
             </form>
           ) : (
-            <form className="auth-form" onSubmit={handleSignupSubmit} key="signup">
+            <form className="auth-form" onSubmit={handleSignupSubmit}>
               <h2>Create Account</h2>
               <p className="subtitle">Sign up to get started</p>
 
               <div className="input-group">
-                <label htmlFor="signup-name">Name</label>
+                <label>Name</label>
                 <input
                   type="text"
-                  id="signup-name"
                   name="name"
                   value={signupData.name}
                   onChange={handleSignupChange}
@@ -232,10 +208,9 @@ function Auth() {
               </div>
 
               <div className="input-group">
-                <label htmlFor="signup-email">Email</label>
+                <label>Email</label>
                 <input
                   type="email"
-                  id="signup-email"
                   name="email"
                   value={signupData.email}
                   onChange={handleSignupChange}
@@ -245,11 +220,10 @@ function Auth() {
               </div>
 
               <div className="input-group">
-                <label htmlFor="signup-password">Password</label>
+                <label>Password</label>
                 <div className="password-input-wrapper">
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    id="signup-password"
                     name="password"
                     value={signupData.password}
                     onChange={handleSignupChange}
@@ -267,16 +241,8 @@ function Auth() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="submit-button"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <span className="spinner"></span>
-                ) : (
-                  'Sign Up'
-                )}
+              <button type="submit" className="submit-button" disabled={isLoading}>
+                {isLoading ? <span className="spinner"></span> : 'Sign Up'}
               </button>
             </form>
           )}
