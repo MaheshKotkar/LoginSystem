@@ -61,7 +61,15 @@ function Auth() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.name || loginData.email); // store username
+
+        // Get username from localStorage if signup stored it
+        const storedEmail = loginData.email;
+        const storedName =
+          localStorage.getItem('useremail') === storedEmail
+            ? localStorage.getItem('username')
+            : storedEmail; // fallback to email
+        localStorage.setItem('username', storedName);
+
         setSuccess('Login successful! Redirecting...');
         setTimeout(() => navigate('/dashboard'), 1000);
       } else {
@@ -107,7 +115,9 @@ function Auth() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('username', signupData.name); // store username
+        localStorage.setItem('username', signupData.name); // store name
+        localStorage.setItem('useremail', signupData.email); // store email for mapping
+
         setSuccess('Account created successfully!');
         setSignupData({ name: '', email: '', password: '' });
         setTimeout(() => navigate('/'), 1000);
