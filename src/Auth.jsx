@@ -61,8 +61,9 @@ function Auth() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.name || loginData.email); // store username
         setSuccess('Login successful! Redirecting...');
-        setTimeout(() => navigate('/dashboard'), 1000); // 👈 Navigate to dashboard
+        setTimeout(() => navigate('/dashboard'), 1000);
       } else {
         setError(data.message || 'Invalid credentials');
       }
@@ -106,9 +107,10 @@ function Auth() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('username', signupData.name); // store username
         setSuccess('Account created successfully!');
         setSignupData({ name: '', email: '', password: '' });
-        setTimeout(() => navigate('/'), 1000); // 👈 Navigate after signup
+        setTimeout(() => navigate('/'), 1000);
       } else {
         setError(data.message || 'Signup failed');
       }
@@ -181,7 +183,7 @@ function Auth() {
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={isLoading}
                   >
-                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                    {showPassword ? 'Show' : 'Hide'}
                   </button>
                 </div>
               </div>
@@ -236,7 +238,7 @@ function Auth() {
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={isLoading}
                   >
-                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                    {showPassword ? 'Show' : 'Hide'}
                   </button>
                 </div>
               </div>
